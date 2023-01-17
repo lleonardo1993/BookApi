@@ -1,4 +1,5 @@
 ﻿using BookApi.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,21 +26,23 @@ namespace BookApi.Repositories
         {
             var BookToDelete = await _context.Books.FindAsync(id);
             _context.Books.Remove(BookToDelete);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Book>> Get()
         {
-            throw new NotImplementedException();
+            return await _context.Books.ToListAsync();
         }
 
         public async Task<Book> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Books.FindAsync(id);
         }
 
         public async Task Update(Book book)
         {
-            throw new NotImplementedException();
+            _context.Entry(book).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }
